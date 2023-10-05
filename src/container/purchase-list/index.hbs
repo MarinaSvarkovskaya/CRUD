@@ -1,7 +1,7 @@
 <main class="main">
   {{> heading title="Мої замовлення"}}
 
-  {{#with data.purchase}}
+  {{#with data.purchases}}
   {{#each list}}
   <a href="/purchase-info?id={{id}}">
     <div class='purchase-item'>
@@ -10,7 +10,7 @@
       </div>
       <div class='purchase-item__block'>
         <span class='title'>Товари</span>
-        <span class='text'>{{product.title}}</span>
+        <span class='text'>{{product}}</span>
       </div>
       <div class='purchase-item__block'>
         <span class='title'>Сума замовлення</span>

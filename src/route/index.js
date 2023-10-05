@@ -82,7 +82,6 @@ Product.add(
   40000,
   100,
 )
-
 class Purchase {
   static DELIVERY_PRICE = 150
   static #BONUS_FACTOR = 0.1
@@ -125,6 +124,7 @@ class Purchase {
 
     this.phone = data.phone
     this.email = data.email
+    this.delivery = data.delivery
 
     this.comment = data.comment || null
     this.bonus = data.bonus || 0
@@ -135,22 +135,27 @@ class Purchase {
     this.productPrice = data.productPrice
     this.deliveryPrice = data.deliveryPrice
     this.amount = data.amount
-
     this.product = product
   }
 
   static add = (...arg) => {
     const newPurchase = new Purchase(...arg)
     this.#list.push(newPurchase)
+    newPurchase.product.amount -= newPurchase.amount
     return newPurchase
   }
 
   static getList = () => {
-    return Purchase.#list.reverse()
+    return Purchase.#list.reverse().map((purchase) => ({
+      id: purchase.id,
+      product: purchase.product.title,
+      totalPrice: purchase.totalPrice,
+      bonus: Purchase.calcBonusAmount(purchase.totalPrice),
+    }))
   }
 
-  static getById = () => {
-    return Purchase.#list.find((item) => item.id === id)
+  static getById = (id) => {
+    return this.#list.find((item) => item.id === id)
   }
 
   static updateById = (id, data) => {
@@ -162,13 +167,14 @@ class Purchase {
       if (data.lastname) purchase.lastname = data.lastname
       if (data.phone) purchase.phone = data.phone
       if (data.email) purchase.email = data.email
+      if (data.delivery) purchase.delivery = data.delivery
+
       return true
     } else {
       return false
     }
   }
 }
-
 class Promocode {
   static #list = []
 
@@ -455,30 +461,16 @@ router.post('/purchase-submit', function (req, res) {
 router.get('/purchase-list', function (req, res) {
   const list = Purchase.getList()
 
-  if (list.length === 0) {
-    res.render('alert', {
-      style: 'alert',
+  res.render('purchase-list', {
+    style: 'purchase-list',
 
-      data: {
-        link: '/purchase-product',
-        title: 'Ваш список замовлень пустий',
-        info: 'Ваш список замовлень пустий',
+    data: {
+      purchases: {
+        list,
       },
-    })
-  } else {
-    console.log('purchase-list:', list)
-    res.render('purchase-list', {
-      style: 'purchase-list',
-
-      data: {
-        purchase: {
-          list,
-        },
-      },
-    })
-  }
+    },
+  })
 })
-
 // ================================================================
 
 router.get('/purchase-info', function (req, res) {
@@ -511,21 +503,26 @@ router.get('/purchase-info', function (req, res) {
 
 router.get('/purchase-edit', function (req, res) {
   const id = Number(req.query.id)
+
   const purchase = Purchase.getById(id)
 
   if (!purchase) {
-    return res.render('alert', {
+    // Якщо товар з таким id не знайдено, відображаємо повідомлення про помилку
+    res.render('alert', {
       style: 'alert',
+      component: ['button', 'heading'],
 
-      data: {
-        message: 'Помилка',
-        info: 'Товар не знайдено',
-        link: `/purchase-list`,
-      },
+      isError: true,
+      title: 'Помилка',
+      info: 'Замовлення з таким ID не знайдено',
     })
   } else {
+    // Якщо товар знайдено, передаємо його дані у шаблон product-edit
     res.render('purchase-edit', {
       style: 'purchase-edit',
+      component: ['heading', 'divider', 'field', 'button'],
+
+      title: 'Зміна данних замовлення',
 
       data: {
         id: purchase.id,
@@ -540,6 +537,7 @@ router.get('/purchase-edit', function (req, res) {
 })
 
 // ================================================================
+
 router.post('/purchase-edit', function (req, res) {
   const id = Number(req.query.id)
   let { firstname, lastname, phone, email, delivery } =
@@ -560,9 +558,11 @@ router.post('/purchase-edit', function (req, res) {
 
     console.log(newPurchase)
 
+    // Якщо оновлення вдалося, відображаємо повідомлення про успіх
     if (newPurchase) {
       res.render('alert', {
         style: 'alert',
+        component: ['button', 'heading'],
 
         data: {
           link: '/purchase-list',
@@ -571,8 +571,11 @@ router.post('/purchase-edit', function (req, res) {
         },
       })
     } else {
+      // Якщо оновлення не вдалося (наприклад, товару з таким id не існує),
+      // відображаємо повідомлення про помилку
       res.render('alert', {
         style: 'alert',
+        component: ['button', 'heading'],
 
         data: {
           link: '/purchase-list',
@@ -582,8 +585,11 @@ router.post('/purchase-edit', function (req, res) {
       })
     }
   } else {
+    // Якщо оновлення не вдалося (наприклад, товару з таким id не існує),
+    // відображаємо повідомлення про помилку
     res.render('alert', {
       style: 'alert',
+      component: ['button', 'heading'],
 
       data: {
         link: '/purchase-list',

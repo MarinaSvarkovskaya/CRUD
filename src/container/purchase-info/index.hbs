@@ -9,10 +9,10 @@
 
   {{>divider}}
   <div>
-    {{> field_form label="Імя" value="firstname"}}
-    {{> field_form label="Прізвище" value="lastname"}}
-    {{> field_form label="Телефон" value="phone"}}
-    {{> field_form label="Пошта" value="email"}}
+    {{> field_form label="Імя" value=firstname}}
+    {{> field_form label="Прізвище" value=lastname}}
+    {{> field_form label="Телефон" value=phone}}
+    {{> field_form label="Пошта" value=email}}
   </div>
 
   {{>divider}}
@@ -26,6 +26,7 @@
   </div>
   {{>divider}}
 
-  <a href='/purchase-edit?id={{id}}'> Змінити дані</a>
+  <a href='/purchase-edit?id={{id}}'>
+    {{> button text="Змінити дані"}}</a>
   {{/with}}
 </main>
