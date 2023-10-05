@@ -1,0 +1,35 @@
+@use '../../lib/service.scss' as s;
+
+@use '../../component/heading/style.scss' as heading;
+@use '../../component/purchase-product/style.scss' as purchaseProduct;
+@use '../../component/field/style.scss' as field;
+@use '../../component/divider/style.scss' as divider;
+
+.purchase-item {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 4fr 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.purchase-item__block {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: s.space(5);
+}
+
+.title {
+font-size: 20px;
+color: black;
+}
+
+.text {
+font-size: 16px;
+color: black;
+}

@@ -1,0 +1,31 @@
+<main class="main">
+
+  {{> heading title=" Інформація про замовлення" }}
+  {{#with data}}
+  <div>
+    <p>ID:</p>
+    <p> {{id}}</p>
+  </div>
+
+  {{>divider}}
+  <div>
+    {{> field_form label="Імя" value="firstname"}}
+    {{> field_form label="Прізвище" value="lastname"}}
+    {{> field_form label="Телефон" value="phone"}}
+    {{> field_form label="Пошта" value="email"}}
+  </div>
+
+  {{>divider}}
+  <div>
+    <p>Адреса доставки {{delivery}}</p>
+    <p> Назва товару {{product}}</p>
+    <p>Вартість товарів {{productPrice}} </p>
+    <p> Сумма до сплати {{totalPrice}}</p>
+    <p> Вартість доставки {{deliveryPrice}}</p>
+    <p> Нараховані бонуси {{bonus}}</p>
+  </div>
+  {{>divider}}
+
+  <a href='/purchase-edit?id={{id}}'> Змінити дані</a>
+  {{/with}}
+</main>

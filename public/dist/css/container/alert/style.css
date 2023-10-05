@@ -1,0 +1,25 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 32px;
+}
+.card__title {
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+.card__button {
+  justify-content: end;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: aliceblue;
+  background-color: blue;
+  max-height: 40px;
+  max-width: 200px;
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */

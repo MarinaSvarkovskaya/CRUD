@@ -1,0 +1,29 @@
+@use '../../lib/service.scss' as s;
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: s.space(4);
+    gap: s.space(8);
+
+    &__title {
+        font-size: 20px;
+        font-weight: bold;
+        padding-bottom: s.space(1);
+
+    }
+    
+    &__button {
+        justify-content: end;
+        border: 1px solid s.color('light');
+        padding: s.space(2);
+        border-radius: 10px;
+        text-decoration: none;
+        color: aliceblue;
+        background-color: blue;
+        max-height: 40px;
+        max-width: 200px;
+        text-align: center;
+    
+    }
+}

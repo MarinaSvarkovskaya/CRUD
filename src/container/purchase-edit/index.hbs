@@ -1,0 +1,16 @@
+<main class="main">
+  {{> heading title="Зміна даних замовлення"}}
+  <form method="POST" action="/purchase-edit?id={{id}}" class='form'>
+    <div>
+      <p>ID:</p>
+      <p> {{id}}</p>
+    </div>
+    <div>
+      {{> field label="Імя" name="firstname"}}
+      {{> field label="Прізвище" name="lastname"}}
+      {{> field label="Телефон" name="phone"}}
+      {{> field label="Пошта" name="email"}}
+    </div>
+    {{>button text="Зберегти зміни"}}
+  </form>
+</main>
